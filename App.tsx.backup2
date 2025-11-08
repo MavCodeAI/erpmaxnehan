@@ -1,0 +1,380 @@
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import ErrorBoundary from './components/ErrorBoundary';
+import MainLayout from './components/layout/MainLayout';
+import { AuthProvider } from './components/auth/AuthProvider';
+import { useERPData } from './hooks/useERPData';
+
+// Fixed: Lazy loading for performance optimization
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Sales = lazy(() => import('./pages/Sales'));
+const Purchases = lazy(() => import('./pages/Purchases'));
+const Accounts = lazy(() => import('./pages/Accounts'));
+const Inventory = lazy(() => import('./pages/Inventory'));
+const Reports = lazy(() => import('./pages/Reports'));
+const Settings = lazy(() => import('./pages/Settings'));
+const JournalVoucherPage = lazy(() => import('./pages/JournalVoucher'));
+const Customers = lazy(() => import('./pages/Customers'));
+const Vendors = lazy(() => import('./pages/Vendors'));
+const SalesReturns = lazy(() => import('./pages/SalesReturns'));
+const PurchaseReturns = lazy(() => import('./pages/PurchaseReturns'));
+const Payments = lazy(() => import('./pages/Payments'));
+const CashAndBank = lazy(() => import('./pages/CashAndBank'));
+const CashPayments = lazy(() => import('./pages/CashPayments'));
+const CashReceipts = lazy(() => import('./pages/CashReceipts'));
+const BankPayments = lazy(() => import('./pages/BankPayments'));
+const BankReceipts = lazy(() => import('./pages/BankReceipts'));
+const ItemGroupCreatePage = lazy(() => import('./components/inventory/ItemGroupCreatePage'));
+const InventoryAdjustmentCreatePage = lazy(() => import('./components/inventory/InventoryAdjustmentCreatePage'));
+
+// Fixed: Loading component with better UX
+const LoadingSpinner = () => (
+  <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+      <p className="text-gray-600 dark:text-gray-400 font-medium">Loading ERPMAX...</p>
+    </div>
+  </div>
+);
+
+// Fixed: Main App component with proper error handling and performance
+const AppContent: React.FC = () => {
+  const erpData = useERPData();
+
+  // Fixed: Handle global error state
+  if (erpData.error) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="text-center p-8">
+          <div className="text-red-500 text-6xl mb-4">⚠️</div>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Connection Error
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Unable to connect to the database. Please check your connection.
+          </p>
+          <button
+            onClick={erpData.loadAllData}
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+          >
+            Retry Connection
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <MainLayout>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <Dashboard 
+                invoices={erpData.invoices} 
+                bills={erpData.bills} 
+                customers={erpData.customers}
+                vendors={erpData.vendors}
+                inventoryItems={erpData.inventoryItems}
+              />
+            } 
+          />
+          
+          {/* Sales Routes */}
+          <Route 
+            path="/sales/invoices/*" 
+            element={
+              <Sales 
+                invoices={erpData.invoices} 
+                onSaveInvoice={erpData.createInvoice} 
+                onUpdateInvoice={erpData.updateInvoice}
+                onDeleteInvoice={erpData.deleteInvoice}
+                inventoryItems={erpData.inventoryItems} 
+                customers={erpData.customers}
+                loading={erpData.loading}
+              />
+            } 
+          />
+          <Route 
+            path="/sales/customers/*" 
+            element={
+              <Customers 
+                customers={erpData.customers} 
+                onSave={erpData.createCustomer}
+                onUpdate={erpData.updateCustomer}
+                onDelete={erpData.deleteCustomer}
+                invoices={erpData.invoices}
+                loading={erpData.loading}
+              />
+            } 
+          />
+          <Route 
+            path="/sales/returns" 
+            element={
+              <SalesReturns 
+                salesReturns={[]} 
+                onSave={() => {}} 
+                inventoryItems={erpData.inventoryItems} 
+                customers={erpData.customers}
+              />
+            } 
+          />
+          
+          {/* Purchases Routes */}
+          <Route 
+            path="/purchases/bills/*" 
+            element={
+              <Purchases 
+                bills={erpData.bills} 
+                onSaveBill={erpData.createBill}
+                onUpdateBill={erpData.updateBill}
+                onDeleteBill={erpData.deleteBill}
+                inventoryItems={erpData.inventoryItems} 
+                vendors={erpData.vendors}
+                loading={erpData.loading}
+              />
+            } 
+          />
+          <Route 
+            path="/purchases/vendors/*" 
+            element={
+              <Vendors 
+                vendors={erpData.vendors} 
+                onSave={erpData.createVendor}
+                onUpdate={erpData.updateVendor}
+                onDelete={erpData.deleteVendor}
+                loading={erpData.loading}
+              />
+            } 
+          />
+          <Route 
+            path="/purchases/returns" 
+            element={
+              <PurchaseReturns 
+                purchaseReturns={[]} 
+                onSave={() => {}} 
+                inventoryItems={erpData.inventoryItems} 
+                vendors={erpData.vendors}
+              />
+            } 
+          />
+
+          {/* Payments Routes */}
+          <Route 
+            path="/payments" 
+            element={
+              <Payments 
+                customers={erpData.customers} 
+                vendors={erpData.vendors} 
+                invoices={erpData.invoices} 
+                bills={erpData.bills}
+                customerPayments={[]} 
+                vendorPayments={[]}
+                onSaveCustomerPayment={() => {}}
+                onSaveVendorPayment={() => {}}
+              />
+            } 
+          />
+          
+          {/* Inventory Routes */}
+          <Route path="/inventory" element={<Navigate to="/inventory/items" replace />} />
+          <Route 
+            path="/inventory/items/*" 
+            element={
+              <Inventory 
+                items={erpData.inventoryItems} 
+                onSaveItem={erpData.createInventoryItem}
+                onUpdateItem={erpData.updateInventoryItem}
+                onDeleteItem={erpData.deleteInventoryItem}
+                loading={erpData.loading}
+              />
+            } 
+          />
+          <Route 
+            path="/inventory/groups" 
+            element={
+              <ItemGroupCreatePage 
+                onSaveItems={() => {}} 
+                inventoryItems={erpData.inventoryItems}
+              />
+            } 
+          />
+          <Route 
+            path="/inventory/adjustments" 
+            element={
+              <InventoryAdjustmentCreatePage 
+                inventoryItems={erpData.inventoryItems}
+                inventoryAdjustments={[]} 
+                onSave={() => {}} 
+              />
+            } 
+          />
+          
+          {/* Accounting Routes */}
+          <Route path="/accounting/accounts" element={<Accounts />} />
+          <Route 
+            path="/accounting/jv" 
+            element={
+              <JournalVoucherPage 
+                journalVouchers={[]} 
+                onSave={() => {}} 
+                onDelete={() => {}} 
+                accounts={[]} 
+              />
+            } 
+          />
+          
+          {/* Cash and Bank Routes */}
+          <Route path="/cash-and-bank" element={<Navigate to="/cash-and-bank/cash-payments" replace />} />
+          <Route 
+            path="/cash-and-bank/cash-payments" 
+            element={
+              <CashPayments 
+                vouchers={[]} 
+                onSave={() => {}} 
+                onDelete={() => {}} 
+                accounts={[]} 
+                allTransactions={{
+                  invoices: erpData.invoices,
+                  bills: erpData.bills,
+                  journalVouchers: [],
+                  customerPayments: [],
+                  vendorPayments: [],
+                  salesReturns: [],
+                  purchaseReturns: []
+                }}
+              />
+            } 
+          />
+          <Route 
+            path="/cash-and-bank/cash-receipts" 
+            element={
+              <CashReceipts 
+                vouchers={[]} 
+                onSave={() => {}} 
+                onDelete={() => {}} 
+                accounts={[]} 
+                allTransactions={{
+                  invoices: erpData.invoices,
+                  bills: erpData.bills,
+                  journalVouchers: [],
+                  customerPayments: [],
+                  vendorPayments: [],
+                  salesReturns: [],
+                  purchaseReturns: []
+                }}
+              />
+            } 
+          />
+          <Route 
+            path="/cash-and-bank/bank-payments" 
+            element={
+              <BankPayments 
+                vouchers={[]} 
+                onSave={() => {}} 
+                onDelete={() => {}} 
+                accounts={[]} 
+                allTransactions={{
+                  invoices: erpData.invoices,
+                  bills: erpData.bills,
+                  journalVouchers: [],
+                  customerPayments: [],
+                  vendorPayments: [],
+                  salesReturns: [],
+                  purchaseReturns: []
+                }}
+              />
+            } 
+          />
+          <Route 
+            path="/cash-and-bank/bank-receipts" 
+            element={
+              <BankReceipts 
+                vouchers={[]} 
+                onSave={() => {}} 
+                onDelete={() => {}} 
+                accounts={[]} 
+                allTransactions={{
+                  invoices: erpData.invoices,
+                  bills: erpData.bills,
+                  journalVouchers: [],
+                  customerPayments: [],
+                  vendorPayments: [],
+                  salesReturns: [],
+                  purchaseReturns: []
+                }}
+              />
+            } 
+          />
+          
+          {/* Other Routes */}
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/settings" element={<Settings />} />
+          
+          {/* 404 Route */}
+          <Route 
+            path="*" 
+            element={
+              <div className="flex items-center justify-center h-screen">
+                <div className="text-center">
+                  <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                    404 - Page Not Found
+                  </h1>
+                  <p className="text-gray-600 dark:text-gray-400 mb-6">
+                    The page you're looking for doesn't exist.
+                  </p>
+                  <button
+                    onClick={() => window.history.back()}
+                    className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    Go Back
+                  </button>
+                </div>
+              </div>
+            } 
+          />
+        </Routes>
+      </Suspense>
+    </MainLayout>
+  );
+};
+
+// Fixed: Root App component with proper providers
+const App: React.FC = () => {
+  return (
+    <ErrorBoundary>
+      <AuthProvider>
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: '#363636',
+              color: '#fff',
+            },
+            success: {
+              duration: 3000,
+              iconTheme: {
+                primary: '#10b981',
+                secondary: '#fff',
+              },
+            },
+            error: {
+              duration: 5000,
+              iconTheme: {
+                primary: '#ef4444',
+                secondary: '#fff',
+              },
+            },
+          }}
+        />
+        <AppContent />
+      </AuthProvider>
+    </ErrorBoundary>
+  );
+};
+
+export default App;
