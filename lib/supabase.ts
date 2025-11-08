@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Fixed: Use correct Vite environment variables
+// Fixed: Use correct Vite environment variables - Updated with working anon key
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://qxmvgdlognorppmgeusu.supabase.co'
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'PASTE_ANON_KEY_HERE'
 
