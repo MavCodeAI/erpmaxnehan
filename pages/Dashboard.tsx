@@ -26,33 +26,33 @@ const QuickStatCard: React.FC<{
 }> = ({ title, value, change, changeType, icon: Icon, iconColor, onClick }) => {
     return (
         <div 
-            className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow ${
+            className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 hover:shadow-md transition-shadow ${
                 onClick ? 'cursor-pointer' : ''
             }`}
             onClick={onClick}
         >
             <div className="flex items-center justify-between">
-                <div className="flex-1">
-                    <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2">{value}</h3>
+                <div className="flex-1 min-w-0">
+                    <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 truncate">{title}</p>
+                    <h3 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 sm:mt-2 truncate">{value}</h3>
                     {change && (
                         <div className="flex items-center mt-2">
                             {changeType === 'increase' ? (
-                                <ArrowUpRight className="w-4 h-4 text-green-500 mr-1" />
+                                <ArrowUpRight className="w-3 h-3 sm:w-4 sm:h-4 text-green-500 mr-1 flex-shrink-0" />
                             ) : (
-                                <ArrowDownRight className="w-4 h-4 text-red-500 mr-1" />
+                                <ArrowDownRight className="w-3 h-3 sm:w-4 sm:h-4 text-red-500 mr-1 flex-shrink-0" />
                             )}
-                            <span className={`text-sm font-medium ${
+                            <span className={`text-xs sm:text-sm font-medium truncate ${
                                 changeType === 'increase' ? 'text-green-600' : 'text-red-600'
                             }`}>
                                 {change}
                             </span>
-                            <span className="text-xs text-gray-500 ml-1">vs last month</span>
+                            <span className="text-xs text-gray-500 ml-1 hidden sm:inline">vs last month</span>
                         </div>
                     )}
                 </div>
-                <div className={`${iconColor} bg-opacity-10 p-3 rounded-lg`}>
-                    <Icon className={`w-6 h-6 ${iconColor.replace('bg-', 'text-')}`} />
+                <div className={`${iconColor} bg-opacity-10 p-2 sm:p-3 rounded-lg ml-2 sm:ml-4 flex-shrink-0`}>
+                    <Icon className={`w-4 h-4 sm:w-6 sm:h-6 ${iconColor.replace('bg-', 'text-')}`} />
                 </div>
             </div>
         </div>
@@ -61,8 +61,8 @@ const QuickStatCard: React.FC<{
 
 // Reusable card component for dashboard sections
 const DashboardCard: React.FC<{ children: React.ReactNode; className?: string; title?: string }> = ({ children, className = '', title }) => (
-  <div className={`bg-white dark:bg-gray-800 rounded-lg shadow p-6 ${className}`}>
-    {title && <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">{title}</h3>}
+  <div className={`bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 ${className}`}>
+    {title && <h3 className="text-base sm:text-lg font-semibold text-gray-800 dark:text-gray-200 mb-3 sm:mb-4">{title}</h3>}
     {children}
   </div>
 );
@@ -81,9 +81,9 @@ const ReceivablesPayablesCard: React.FC<{
 
   return (
     <DashboardCard>
-      <div className="flex justify-between items-center mb-2">
-        <h3 className="text-lg font-semibold text-gray-600 dark:text-gray-300">{title}</h3>
-        {onNewClick && <Button size="sm" variant="secondary" icon={Plus} onClick={onNewClick}>New</Button>}
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2 space-y-2 sm:space-y-0">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-600 dark:text-gray-300">{title}</h3>
+        {onNewClick && <Button size="sm" variant="secondary" icon={Plus} onClick={onNewClick} className="w-full sm:w-auto">New</Button>}
       </div>
       <p className="text-xs text-gray-500">
         Total Unpaid {isPayable ? 'Bills' : 'Invoices'}: {new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR' }).format(totalUnpaid)}
@@ -92,15 +92,15 @@ const ReceivablesPayablesCard: React.FC<{
         <div className="bg-yellow-400 h-1.5 rounded-full" style={{ width: `${100 - overduePercentage}%` }}></div>
       </div>
       <div className="flex justify-between mt-4">
-        <div className="text-center">
+        <div className="text-center flex-1">
           <p className="text-xs text-gray-500">CURRENT</p>
-          <p className="text-xl font-semibold text-gray-800 dark:text-gray-200">{new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(current)}</p>
+          <p className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-gray-200">{new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(current)}</p>
         </div>
-        <div className="text-center">
+        <div className="text-center flex-1">
           <p className="text-xs text-gray-500">OVERDUE</p>
-          <div className="flex items-center">
-            <p className="text-xl font-semibold text-red-500">{new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(overdue)}</p>
-            <ChevronDown className="w-4 h-4 text-gray-500 ml-1" />
+          <div className="flex items-center justify-center">
+            <p className="text-lg sm:text-xl font-semibold text-red-500">{new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(overdue)}</p>
+            <ChevronDown className="w-3 h-3 sm:w-4 sm:h-4 text-gray-500 ml-1" />
           </div>
         </div>
       </div>
@@ -352,22 +352,22 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices, bills, accounts, invent
 
     return (
       <>
-        <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 sm:mb-6 space-y-4 sm:space-y-0">
             <div>
-                <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">
                     Dashboard
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 mt-1">Welcome back! Here's what's happening with your business.</p>
+                <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">Welcome back! Here's what's happening with your business.</p>
             </div>
-            <div className="flex space-x-2">
-                <Button variant="secondary" icon={Plus} onClick={handleNewInvoice}>New Invoice</Button>
-                <Button variant="primary" icon={Plus} onClick={handleNewBill}>New Bill</Button>
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                <Button variant="secondary" icon={Plus} onClick={handleNewInvoice} className="w-full sm:w-auto">New Invoice</Button>
+                <Button variant="primary" icon={Plus} onClick={handleNewBill} className="w-full sm:w-auto">New Bill</Button>
             </div>
         </div>
         
         <div className="space-y-6 animate-fade-in">
             {/* Quick Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 <QuickStatCard
                     title="Total Revenue"
                     value={new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(stats.totalRevenue)}
@@ -406,7 +406,7 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices, bills, accounts, invent
             </div>
 
             {/* Receivables & Payables */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <ReceivablesPayablesCard
                     title="Total Receivables"
                     totalUnpaid={stats.totalReceivables}
@@ -424,21 +424,23 @@ const Dashboard: React.FC<DashboardProps> = ({ invoices, bills, accounts, invent
                 />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6">
                 <CashFlowChart />
-                <InventorySummaryCard 
-                    inventoryItems={inventoryItems}
-                    onNewItemClick={handleNewItem}
-                    onManageInventoryClick={handleManageInventory}
-                />
+                <div className="xl:col-span-2">
+                    <InventorySummaryCard 
+                        inventoryItems={inventoryItems}
+                        onNewItemClick={handleNewItem}
+                        onManageInventoryClick={handleManageInventory}
+                    />
+                </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 sm:gap-6">
                 <IncomeExpenseChart />
                 <TopExpensesChart />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <AccountListCard title="Bank and Credit Cards" accounts={bankAccounts} />
                 <AccountListCard title="Account Watchlist" accounts={watchlistAccounts} />
             </div>

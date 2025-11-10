@@ -14,7 +14,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search invoices, customers, vendors, items... (Ctrl+K)' }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search... (Ctrl+K)' }) => {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -118,7 +118,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search invoices, c
   return (
     <div ref={searchRef} className="relative w-full max-w-xl">
       <div className="relative">
-        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+        <div className="absolute inset-y-0 left-0 flex items-center pl-2 sm:pl-3 pointer-events-none">
           <Search className="w-4 h-4 text-gray-400" />
         </div>
         <input
@@ -131,7 +131,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search invoices, c
           }}
           onFocus={() => setIsOpen(true)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-10 py-2 text-sm text-gray-700 placeholder-gray-500 bg-gray-100 border-0 rounded-lg dark:placeholder-gray-400 dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-600"
+          className="w-full pl-8 sm:pl-10 pr-8 sm:pr-10 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 placeholder-gray-500 bg-gray-100 border-0 rounded-lg dark:placeholder-gray-400 dark:bg-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white dark:focus:bg-gray-600"
         />
         {query && (
           <button
@@ -139,37 +139,37 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search invoices, c
               setQuery('');
               setResults([]);
             }}
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+            className="absolute inset-y-0 right-0 flex items-center pr-2 sm:pr-3 text-gray-400 hover:text-gray-600"
           >
-            <X className="w-4 h-4" />
+            <X className="w-3 h-3 sm:w-4 sm:h-4" />
           </button>
         )}
       </div>
 
       {/* Search Results Dropdown */}
       {isOpen && query && (
-        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl border dark:border-gray-700 max-h-96 overflow-y-auto">
+        <div className="absolute z-50 w-full mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl border dark:border-gray-700 max-h-[70vh] sm:max-h-96 overflow-y-auto">
           {results.length > 0 ? (
             <ul className="py-2">
               {results.map((result, index) => (
                 <li key={result.id}>
                   <button
                     onClick={() => handleResultClick(result)}
-                    className={`w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
                       index === selectedIndex ? 'bg-gray-50 dark:bg-gray-700' : ''
                     }`}
                   >
                     <div className="flex items-start">
-                      <span className="text-2xl mr-3">{getTypeIcon(result.type)}</span>
+                      <span className="text-xl sm:text-2xl mr-2 sm:mr-3">{getTypeIcon(result.type)}</span>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
+                        <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
                           {result.title}
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                           {result.subtitle}
                         </p>
                       </div>
-                      <span className="ml-2 px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded">
+                      <span className="ml-2 px-1.5 sm:px-2 py-0.5 sm:py-1 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded hidden sm:inline">
                         {result.type}
                       </span>
                     </div>
@@ -186,7 +186,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ placeholder = 'Search invoices, c
           )}
 
           {/* Search Tips */}
-          <div className="px-4 py-2 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
+          <div className="px-3 sm:px-4 py-2 border-t dark:border-gray-700 bg-gray-50 dark:bg-gray-900 hidden sm:block">
             <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
               <span>💡 Tip: Use Ctrl+K to quick search</span>
               <div className="flex gap-2">

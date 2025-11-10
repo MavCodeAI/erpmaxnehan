@@ -79,12 +79,12 @@ const Breadcrumbs: React.FC = () => {
   }
 
   return (
-    <nav className="flex items-center space-x-2 text-sm mb-4" aria-label="Breadcrumb">
+    <nav className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm mb-3 sm:mb-4 overflow-x-auto" aria-label="Breadcrumb">
       <Link
         to="/dashboard"
-        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+        className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors flex-shrink-0"
       >
-        <Home className="w-4 h-4" />
+        <Home className="w-3 h-3 sm:w-4 sm:h-4" />
       </Link>
 
       {breadcrumbs.map((crumb, index) => {
@@ -92,15 +92,15 @@ const Breadcrumbs: React.FC = () => {
         
         return (
           <React.Fragment key={crumb.path}>
-            <ChevronRight className="w-4 h-4 text-gray-400 dark:text-gray-600" />
+            <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 dark:text-gray-600 flex-shrink-0" />
             {isLast ? (
-              <span className="text-gray-900 dark:text-gray-100 font-medium">
+              <span className="text-gray-900 dark:text-gray-100 font-medium whitespace-nowrap">
                 {crumb.label}
               </span>
             ) : (
               <Link
                 to={crumb.path}
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors whitespace-nowrap"
               >
                 {crumb.label}
               </Link>

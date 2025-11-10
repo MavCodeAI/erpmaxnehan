@@ -28,27 +28,27 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, size = 
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center animate-fade-in"
+      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-4 animate-fade-in"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
       onClick={onClose}
     >
       <div
-        className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full mx-4 p-8 relative ${sizeClasses[size]}`}
+        className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-h-screen overflow-y-auto p-4 sm:p-6 md:p-8 relative ${sizeClasses[size]}`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center pb-6 border-b dark:border-gray-700">
-          <h3 id="modal-title" className="text-3xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+        <div className="flex justify-between items-center pb-4 sm:pb-6 border-b dark:border-gray-700">
+          <h3 id="modal-title" className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none"
+            className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none p-1"
             aria-label="Close modal"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
-        <div className="mt-8">
+        <div className="mt-4 sm:mt-6 md:mt-8">
           {children}
         </div>
       </div>

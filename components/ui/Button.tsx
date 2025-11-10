@@ -17,18 +17,18 @@ const Button: React.FC<ButtonProps> = ({
   loading = false,
   ...props
 }) => {
-  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'inline-flex items-center justify-center font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed touch-manipulation';
 
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500',
-    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 focus:ring-gray-500',
-    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
+    primary: 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500 active:bg-blue-800',
+    secondary: 'bg-gray-200 text-gray-800 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600 focus:ring-gray-500 active:bg-gray-400 dark:active:bg-gray-500',
+    danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500 active:bg-red-800',
   };
 
   const sizeClasses = {
-    sm: children ? 'px-3 py-1.5 text-sm' : 'p-2',
-    md: children ? 'px-4 py-2 text-base' : 'p-2.5',
-    lg: children ? 'px-6 py-3 text-lg' : 'p-3',
+    sm: children ? 'px-2.5 py-1.5 text-xs sm:text-sm' : 'p-2',
+    md: children ? 'px-3 py-2 text-sm sm:text-base' : 'p-2.5',
+    lg: children ? 'px-4 py-2.5 text-base sm:text-lg' : 'p-3',
   };
 
   const iconSizeClasses = {

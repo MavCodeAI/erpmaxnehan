@@ -3,14 +3,14 @@ import React, { useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { NAV_ITEMS } from '../../constants';
 import { NavItem } from '../../types';
-import { ChevronDown, Zap } from 'lucide-react';
+import { ChevronDown, Zap, X } from 'lucide-react';
 
 interface SidebarProps {
   open: boolean;
   setOpen: (open: boolean) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ open }) => {
+const Sidebar: React.FC<SidebarProps> = ({ open, setOpen }) => {
   const location = useLocation();
   const [openSubMenus, setOpenSubMenus] = useState<Record<string, boolean>>({});
 
@@ -66,17 +66,39 @@ const Sidebar: React.FC<SidebarProps> = ({ open }) => {
   };
 
   return (
-    <aside className={`z-20 flex-shrink-0 hidden overflow-y-auto bg-white dark:bg-gray-800 md:block transition-all duration-300 ${open ? 'w-64' : 'w-0'}`}>
-      <div className="py-4 text-gray-500 dark:text-gray-400">
-        <a className="ml-6 text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center" href="#">
-          <Zap className="w-6 h-6 text-blue-500" />
-          <span className="ml-2">ERPMAX</span>
-        </a>
-        <ul className="mt-6 px-4">
-          {NAV_ITEMS.map(renderNavItem)}
-        </ul>
-      </div>
-    </aside>
+    <>
+      {/* Mobile overlay */}
+      {open && (
+        <div 
+          className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden"
+          onClick={() => setOpen(false)}
+        />
+      )}
+      
+      {/* Sidebar */}
+      <aside className={`fixed inset-y-0 left-0 z-50 flex-shrink-0 overflow-y-auto bg-white dark:bg-gray-800 transition-all duration-300 md:relative md:z-20 ${
+        open ? 'w-64' : 'w-0 md:w-64'
+      }`}>
+        <div className="py-4 text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-between px-6 mb-6">
+            <a className="text-lg font-bold text-gray-800 dark:text-gray-200 flex items-center" href="#">
+              <Zap className="w-6 h-6 text-blue-500" />
+              <span className="ml-2">ERPMAX</span>
+            </a>
+            <button
+              className="p-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-blue"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+            >
+              <X className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+            </button>
+          </div>
+          <ul className="px-4">
+            {NAV_ITEMS.map(renderNavItem)}
+          </ul>
+        </div>
+      </aside>
+    </>
   );
 };
 

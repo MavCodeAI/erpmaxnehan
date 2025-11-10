@@ -40,22 +40,22 @@ const ItemListPage: React.FC<Pick<InventoryPageProps, 'items'>> = ({ items }) =>
 
     return (
         <>
-            <div className="flex justify-between items-center my-6">
-                <h2 className="text-2xl font-semibold text-gray-700 dark:text-gray-200">Inventory Items</h2>
-                <div className="flex space-x-2">
-                    <Button variant="secondary" icon={FileDown}>Export</Button>
-                    <Button variant="primary" icon={PlusCircle} onClick={() => navigate('/inventory/items/new')}>New Item</Button>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center my-4 sm:my-6 space-y-3 sm:space-y-0">
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 dark:text-gray-200">Inventory Items</h2>
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+                    <Button variant="secondary" icon={FileDown} className="w-full sm:w-auto">Export</Button>
+                    <Button variant="primary" icon={PlusCircle} onClick={() => navigate('/inventory/items/new')} className="w-full sm:w-auto">New Item</Button>
                 </div>
             </div>
             
             <Card>
                 <div className="flex items-center justify-between mb-4">
-                     <div className="relative w-full max-w-sm">
+                     <div className="relative w-full sm:max-w-sm">
                         <div className="absolute inset-y-0 flex items-center pl-2">
                           <Search className="w-4 h-4 text-gray-500" />
                         </div>
                         <input
-                          className="w-full pl-8 pr-2 py-2 text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border border-gray-300 rounded-md dark:placeholder-gray-500 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none form-input"
+                          className="w-full pl-8 pr-2 py-1.5 sm:py-2 text-xs sm:text-sm text-gray-700 placeholder-gray-600 bg-gray-100 border border-gray-300 rounded-md dark:placeholder-gray-500 dark:bg-gray-700 dark:text-gray-200 focus:placeholder-gray-500 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500 focus:outline-none form-input"
                           type="text"
                           placeholder="Search by Name or SKU"
                           value={searchTerm}

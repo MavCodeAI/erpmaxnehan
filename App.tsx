@@ -8,6 +8,17 @@ import { useERPData } from './hooks/useERPData';
 import MainLayout from './components/layout/MainLayout';
 import './index.css';
 
+// Auth Pages
+const Login = lazy(() => import('./pages/Login').catch(err => {
+  console.error('Failed to load Login:', err);
+  return { default: () => <div>Failed to load Login</div> };
+}));
+
+const Signup = lazy(() => import('./pages/Signup').catch(err => {
+  console.error('Failed to load Signup:', err);
+  return { default: () => <div>Failed to load Signup</div> };
+}));
+
 // Fixed: Lazy load components with error boundaries for better UX
 const Dashboard = lazy(() => import('./pages/Dashboard').catch(err => {
   console.error('Failed to load Dashboard:', err);
@@ -205,20 +216,28 @@ const AppContent: React.FC = () => {
 
   return (
     <ErrorBoundary>
-      <MainLayout>
-        <Suspense fallback={<LoadingSpinner />}>
-          <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <SafeDashboard 
-                  invoices={erpData.invoices} 
-                  bills={erpData.bills} 
-                  accounts={[]} 
-                />
-              } 
-            />
+      <Suspense fallback={<LoadingSpinner />}>
+        <Routes>
+          {/* Auth Routes - No Layout */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          {/* Main App Routes - With Layout */}
+          <Route path="/*" element={
+            <MainLayout>
+              <Suspense fallback={<LoadingSpinner />}>
+                <Routes>
+                  <Route path="/" element={<Navigate to="/dashboard" replace />} />
+                  <Route 
+                    path="/dashboard" 
+                    element={
+                      <SafeDashboard 
+                        invoices={erpData.invoices} 
+                        bills={erpData.bills} 
+                        accounts={[]} 
+                      />
+                    } 
+                  />
           
           {/* Sales Routes */}
           <Route 
@@ -512,8 +531,11 @@ const AppContent: React.FC = () => {
             } 
           />
         </Routes>
+              </Suspense>
+            </MainLayout>
+          } />
+        </Routes>
       </Suspense>
-    </MainLayout>
     </ErrorBoundary>
   );
 };

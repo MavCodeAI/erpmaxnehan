@@ -44,19 +44,19 @@ const StatusBadge: React.FC<{ status: Invoice['status'], dueDate: string }> = ({
 }
 
 const SummaryCard: React.FC<{ title: string, amount: number, count?: number, icon: React.ElementType, color: string }> = ({ title, amount, count, icon: Icon, color }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border-l-4" style={{ borderLeftColor: color }}>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 sm:p-6 border-l-4" style={{ borderLeftColor: color }}>
         <div className="flex items-center justify-between">
-            <div className="flex-1">
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-2">
+            <div className="flex-1 min-w-0">
+                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+                <p className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-gray-100 mt-1 sm:mt-2 truncate">
                     {new Intl.NumberFormat('en-PK', { style: 'currency', currency: 'PKR', minimumFractionDigits: 0 }).format(amount)}
                 </p>
                 {count !== undefined && (
                     <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{count} invoice{count !== 1 ? 's' : ''}</p>
                 )}
             </div>
-            <div className="p-3 rounded-lg" style={{ backgroundColor: `${color}20` }}>
-                <Icon className="w-6 h-6" style={{ color }} />
+            <div className="p-2 sm:p-3 rounded-lg flex-shrink-0 ml-2" style={{ backgroundColor: `${color}20` }}>
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color }} />
             </div>
         </div>
     </div>

@@ -15,34 +15,34 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="relative z-10 py-4 bg-white dark:bg-gray-800 shadow-md">
-      <div className="container flex items-center justify-between h-full px-6 mx-auto text-blue-600 dark:text-blue-300">
+    <header className="relative z-10 py-3 sm:py-4 bg-white dark:bg-gray-800 shadow-md">
+      <div className="container flex items-center justify-between h-full px-4 sm:px-6 mx-auto text-blue-600 dark:text-blue-300">
         {/* Mobile hamburger */}
         <button
-          className="p-1 mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-blue"
+          className="p-1 mr-3 sm:mr-5 -ml-1 rounded-md md:hidden focus:outline-none focus:shadow-outline-blue"
           onClick={() => setSidebarOpen(!sidebarOpen)}
           aria-label="Menu"
         >
-          {sidebarOpen ? <X className="w-6 h-6"/> : <Menu className="w-6 h-6" />}
+          {sidebarOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6"/> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
         </button>
         {/* Search input */}
         <div className="flex justify-center flex-1 lg:mr-32">
-          <div className="w-full mr-6">
+          <div className="w-full mr-3 sm:mr-6">
             <SearchBar />
           </div>
         </div>
-        <ul className="flex items-center flex-shrink-0 space-x-6">
+        <ul className="flex items-center flex-shrink-0 space-x-3 sm:space-x-6">
           {/* Theme toggler */}
           <li className="flex">
             <button
-              className="rounded-md focus:outline-none focus:shadow-outline-blue"
+              className="rounded-md focus:outline-none focus:shadow-outline-blue p-1"
               onClick={toggleTheme}
               aria-label="Toggle color mode"
             >
               {theme === 'dark' ? (
-                <Sun className="w-5 h-5" />
+                <Sun className="w-4 h-4 sm:w-5 sm:h-5" />
               ) : (
-                <Moon className="w-5 h-5" />
+                <Moon className="w-4 h-4 sm:w-5 sm:h-5" />
               )}
             </button>
           </li>
